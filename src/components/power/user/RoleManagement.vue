@@ -10,7 +10,7 @@
         <el-table
             :data="tableData"
             border
-            style="width: 100%">
+            style="100%" @cell-click="cellClick">
             <el-table-column
               prop="iwoid"
               label="序号"
@@ -49,7 +49,6 @@
               label="备注">
             </el-table-column>
             <el-table-column
-              prop="reconFileName"
               label="操作">
               <template scope="scope">
                       <el-button @click="handleClick" type="text" size="small">修改</el-button>
@@ -65,77 +64,152 @@
       </div>
     </div>
     <el-dialog title="" v-model="submitAddUser"  >
-      <v-adduser></v-adduser>
+      <v-addRole @update="update"></v-addRole>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
-  import adduser from 'src/components/dialog/createuser.vue'
+  import addRole from 'src/components/dialog/addRole.vue'
   export default {
     data() {
       return {
          submitAddUser: false,
-         tableData: [{
+         editUser:false,
+         tableData: [
+         {
           iwoid: '1',
-          roleId: '55551',
-          roleName: 'admin',
-          roleLevel: '管理级别',
+          roleId: '1',
+          roleName: '管理员',
+          roleLevel: '1',
           description: '描述',
-          modifier: '刘丽',
           modifyTime: '2017-3-3 14:33:29',
+          modifier: '网红',
           roleStatus: '正常',
-          remark: '角色',
+          remark: '备注信息',
         },
-        {
+         {
           iwoid: '2',
-          roleId: '55551',
-          roleName: 'admin',
-          roleLevel: '管理级别',
+          roleId: '1',
+          roleName: '管理员',
+          roleLevel: '1',
           description: '描述',
-          modifier: '刘丽',
           modifyTime: '2017-3-3 14:33:29',
+          modifier: '网红',
           roleStatus: '正常',
-          remark: '角色'
-        }]
+          remark: '备注信息',
+        },
+         {
+          iwoid: '3',
+          roleId: '1',
+          roleName: '管理员',
+          roleLevel: '1',
+          description: '描述',
+          modifyTime: '2017-3-3 14:33:29',
+          modifier: '网红',
+          roleStatus: '注销',
+          remark: '备注信息',
+        }        
+      ]
+      }
+    },
+    props: {
+      title: {
+        type: String,
+        default: ''
+      },
+
+      modal: {
+        type: Boolean,
+        default: true
+      },
+  
+      modalAppendToBody: {
+        type: Boolean,
+        default: true
+      },
+
+      lockScroll: {
+        type: Boolean,
+        default: true
+      },
+
+      closeOnClickModal: {
+        type: Boolean,
+        default: true
+      },
+
+      closeOnPressEscape: {
+        type: Boolean,
+        default: true
+      },
+
+      showClose: {
+        type: Boolean,
+        default: true
+      },
+
+      size: {
+        type: String,
+        default: 'small'
+      },
+
+      customClass: {
+        type: String,
+        default: ''
+      },
+
+      top: {
+        type: String,
+        default: '15%'
       }
     },
     methods: {
       handleClick() {
-        console.log('修改!')
+      	console.log('修改!');
+        this.submitAddUser = true;
+      },
+      update(form){
+        this.tableData.push(JSON.parse(JSON.stringify(form)));
+        this.submitAddUser=false;
+      },
+      cellClick(row, column, cell, event){
+        if(row.status=="注销"){return;}
+        //this.loginname=row.loginName;
+        this.editUser=true;
+        //console.log(this.loginname);
       }
     },
-   components: {
-     'v-adduser': adduser
-   }
+     components: {    
+       'v-addRole': addRole
+     }
   }
 </script>
 
 <style scoped>
 /* custom style */
   .border-box{
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; 
     background-color: white;
   }
   .layer-init{
     margin: 20px;
-    padding: 20px 10px 0 10px;
+    padding: 20px 10px 0 10px;  
   }
   .layer_mid{
     margin: 20px;
     padding: 0 20px 20px 20px;
   }
-
+ 
   .layer-init .el-row, .layer_mid .el-row{
     margin-left: 0!important;
-    margin-right: 0!important;
+    margin-right: 0!important; 
   }
   .output h1{
     border-bottom: 1px solid #d43d42;
     text-align: left;
     line-height: 1.5;
-    margin-top:10px;
+    margin-top:10px; 
   }
    .span_h1{
     color: white;
@@ -163,7 +237,7 @@
     padding: 0 10px;
   }*/
   /* element ui style */
-  .el-row {
+  .el-row { 
     &:last-child {
       margin-bottom: 0;
     }

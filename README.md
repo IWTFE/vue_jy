@@ -23,14 +23,16 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 #git 命令
 #git init 初始化
 #git add ./ 添加要上传的目录
-#git branch 查看分支
-#git checkout -b data 检出某一分支
+#git commit -m "floweryan" //提交
+#git remote add origin https://git.coding.net/IWT_FE/vuss-one.git
+#git push -u //提交到web
+--------------------------------------------
+#git checkout -b api 检出某一分支
 #git checkout master 分支切换
+#git push --set-upstream origin master //与web分支对应
 #git pull origin data 拉去线上版本
 #git push -u 提交现在版本
-#git remote add origin https://git.coding.net/IWT_FE/vuss-one.git
-#git pull origin master
-#git push --set-upstream origin master
-#git push -u
 
-#floweryan1111
+#git merge --no-ff api //将api的分支与dev的分支合并
+
+#floweryan1111-api-reapi

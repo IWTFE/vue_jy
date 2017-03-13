@@ -1,47 +1,50 @@
-<template>
+<template >
 <div>
   <div class="layer_mid border-box">
     <section class="layer-content output">
+
       <h1>
-          <el-button type="danger" size="small" class="but-style" @click="submitAddUser = true">创建角色</el-button>
+          <el-button type="danger" size="small" class="but-style" @click="submitAddUser = true" >创建角色</el-button>
         </h1>
     </section>
     <section class="table-info">
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="iwoid" label="序号" width="80">
+      <el-table :data="getTableData" highlight-current-row v-model="getTableData" border style="width: 100%" v-loading='listLoading'>
+        <el-table-column prop="id" label="序号" width="80">
         </el-table-column>
-        <el-table-column prop="roleId" label="角色代码">
+        <el-table-column prop="roleId" label="角色代码" sortable>
         </el-table-column>
-        <el-table-column prop="roleName" label="角色名称">
+        <el-table-column prop="roleName" label="角色名称" sortable>
         </el-table-column>
-        <el-table-column prop="roleLevel" label="角色级别">
+        <el-table-column prop="roleLevel" label="角色级别" :formatter="formatLevel" sortable>
         </el-table-column>
-        <el-table-column prop="description" label="角色描述">
+        <el-table-column prop="description" label="角色描述" sortable>
         </el-table-column>
-        <el-table-column prop="modifyTime" label="最后修改时间">
+        <el-table-column prop="modifyTime" label="最后修改时间" sortable>
         </el-table-column>
-        <el-table-column prop="modifier" label="最后修改人">
+        <el-table-column prop="modifier" label="最后修改人" sortable>
         </el-table-column>
-        <el-table-column prop="roleStatus" label="状态">
+        <el-table-column prop="roleStatus" label="状态" :formatter="formatStatus" sortable>
         </el-table-column>
-        <el-table-column prop="remark" label="备注">
+        <el-table-column prop="remark" label="备注" sortable>
         </el-table-column>
         <el-table-column prop="reconFileName" label="操作">
-          <template scope="scope">
-                      <el-button @click="handleClick" type="text" size="small">修改</el-button>
-</template>
+        <template scope="scope">
+        <el-button @click="modifyInfo_(scope.$index, scope.row)" type="text" size="small">修改</el-button>
+        </template>
             </el-table-column>
           </el-table>
       </section>
       <div class="block pageer">
-        <el-pagination
-          layout="prev, pager, next"
-          :total="1000">
+        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="getPage.pageRows" :total="getPage.rowCount">
         </el-pagination>
       </div>
     </div>
-    <el-dialog title="" v-model="submitAddUser"  >
+    <el-dialog title="" v-model="submitAddUser" @close='handleDialogClose'>
       <v-adduser></v-adduser>
+    </el-dialog>
+
+    <el-dialog title="" v-model="editFormVisible" @close='handleDialogClose_'>
+      <v-modifyIfo></v-modifyIfo>
     </el-dialog>
 
   </div>
@@ -49,46 +52,83 @@
 
 <script>
 // import axios from 'axios'
+import { mapGetters, mapActions,mapState } from 'vuex'
 import {
   requestPowerUserList
-
 } from '../../../api/api'
-import adduser from 'src/components/dialog/adduser.vue'
+import adduser from 'src/components/dialog/createuser.vue'
+import modifyInfo from 'src/components/dialog/modifyInfo.vue'
 export default {
   data() {
     return {
+      listLoading: false,
       submitAddUser: false,
-      tableData: [{
-        iwoid: '',
-        roleId: '',
-        roleName: '',
-        roleLevel: '',
-        description: '',
-        modifier: '',
-        modifyTime: '',
-        roleStatus: '',
-        remark: ''
-      }]
-    }
-  },
+      modifyInfo: false,
+      editFormVisible:false,
+      tableData: [],
+      total:0,
+      val: 1
+}
+},
   created() {
-    this.addUserList()
+    this.addUserList_(1)
   },
-  methods: {
+  props: {
+  close_: Boolean
+},
+computed: {
+  ...mapState([
+    'paramsStore',
+    'ModifyInfo'
+
+  ]),
+  ...mapGetters([
+    'getlist',
+    'getTableData',
+    'getSuccess',
+    'getModifyInfo',
+    'getPage'
+  ])
+},
+methods: {
+    formatStatus:function (row,column) {
+       return row.roleStatus === 0 ? '正常': row.roleStatus === 1 ? '冻结':row.roleStatus===2 ? '注销':'未知'
+    },
+    formatLevel:function (row,column) {
+       return row.roleStatus === 0 ? '应用级别': row.roleStatus === 1 ? '管理级别':''
+    },
+    ...mapActions([
+      'addUserList',
+      'modifyInfo'
+    ]),
     handleClick() {
       console.log('修改!')
     },
-    addUserList() {
+    handleDialogClose(){
+       this.submitAddUser = false
+    },
+    handleDialogClose_(){
+       this.editFormVisible = false
+    },
+    handleCurrentChange(val){
+      //@分页触发方法
+      console.log('page')
+      console.log(val)
+      this.val = val;
+      this.addUserList_(this.val)
+
+    },
+    addUserList_(val){
       var that = this
-      var verifyParams = {
-          "body": {
+      this.params= {
+        "body": {
             "loginUserId": "admin",
             "page": {
               "currPage": 0,
-              "end": 100,
-              "goPage": 1,
+              "end": 0,
+              "goPage":val,
               "pageCount": 0,
-              "pageRows": 100,
+              "pageRows": 10,
               "rowCount": 0,
               "start": 0
             }
@@ -100,24 +140,27 @@ export default {
             "signature": "null"
           }
       }
-      requestPowerUserList(verifyParams).then(function(response) {
-        // console.log('susu111')
-        console.log(response.body.dateList)
-        that.tableData = response.body.dateList
-        // console.log(that.tableData)
-      }).catch(function(error) {
-        console.log(error)
-      })
+      this.addUserList(this.params);
+    },
+    modifyInfo_(index,row){
+      this.editFormVisible= true
+      this.ModifyInfo.roleId = row.roleId
+      this.ModifyInfo.iwoid = row.iwoid
+      this.ModifyInfo.roleName=row.roleName
+      this.ModifyInfo.roleLevel=row.roleLevel
+      this.ModifyInfo.description=row.description
+      this.ModifyInfo.remark=row.remark
+      this.ModifyInfo.roleStatus=row.roleStatus
     }
   },
   components: {
-    'v-adduser': adduser
+    'v-adduser': adduser,
+    'v-modifyIfo':modifyInfo
   }
 }
 </script>
 
-<style
->
+<style>
 /* custom style */
 
 .border-box {

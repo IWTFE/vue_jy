@@ -38,6 +38,28 @@ import channel from 'components/channel/channel'
 import adduser from 'components/power/user/adduser'
 // @haoboyu permissionquery  角色权限查询
 import permissionquery from 'components/power/user/permissionquery'
+// @haoboyu 测试
+import test from 'components/power/user/test'
+
+// @yanchaochao RoleManagement  角色管理
+import RoleManagement from 'components/power/user/RoleManagement'
+// @yanchaochao RoleRightsManagement  角色权限管理
+import RoleRightsManagement from 'components/power/user/RoleRightsManagement'
+// @yanchaochao RoleRightsSearch  角色权限查询
+import RoleRightsSearch from 'components/power/user/RoleRightsSearch'
+// @yanchaochao UserRightsManagement  用户权限管理
+import UserRightsManagement from 'components/power/user/UserRightsManagement'
+//@yanchaochao UserRightsSearch 用户权限查询
+import UserRightsSearch from 'components/power/user/UserRightsSearch'
+//@yanchaochao resetPassword 重置用户密码
+import resetPassword from 'components/power/user/resetPassword'
+//@yanchaochao newPassword 修改密码
+import newPassword from 'components/power/user/newPassword'
+//@yanchaochao adminlog 管理员操作日志
+import adminlog from 'components/power/log/adminlog'
+//@yanchaochao systemlog 系统处理日志
+import systemlog from 'components/power/log/systemlog'
+
 
 
 Vue.use(Router)
@@ -56,87 +78,162 @@ const routes = [
     path:'/',
     component:home,
     children:[
-      {path:'/account', component: account, name: 'account'},
+      {path:'/account', component: account, name: 'account',alias:'/resources/account/viewInfo'},
     {
       path: '/account/frozen',
       name: 'frozen',
+      alias:'/resources/account/inuse/list',
       component: frozen
     },
     {
       path: '/account/detailed',
       name: 'detailed',
+      alias:'/resources/account/payDetail/list',
       component: detailed
     },
     {
       path: '/trade/prepay',
       name: 'prepay',
+      alias:'/resources/prePay/charge/list',
       component: prepay
     },
     {
       path: '/trade/recharge',
       name: 'recharge',
+      alias:'/resources/account/charge/list',
       component: recharge
     },
     {
       path: '/trade/betting',
       name: 'betting',
+      alias:'/resources/betRecord/list',
       component: betting
     },
     {
       path: '/trade/prize',
       name: 'prize',
+      alias:'/resources/award/return/list',
       component: prize
     },
     {
       path: '/trade/withdraw',
       name: 'withdraw',
+      alias: '/resources/cash/list',
       component: withdraw
     },
     {
       path: '/recon/integral',
       name: 'integral',
+      alias:'/resources/task/baaRecon/list',
       component: integral
     },
     {
       path: '/recon/cncolor',
       name: 'cncolor',
+      alias:'/resources/task/gctRecon/list',
       component: cncolor
     },
     {
       path: '/diff/diffintegral',
       name: 'diffintegral',
+      alias:'/resources/account/baa/diff/list',
       component: diffintegral
     },
     {
       path: '/diff/diffcncolor',
       name: 'diffcncolor',
+      alias:'/resources/account/gct/diff/list',
       component: diffcncolor
     },
     {
       path: '/pay/mesoseries',
       name: 'mesoseries',
+      alias:'/resources/prepay/boc/list',
       component: mesoseries
     },
     {
       path: '/pay/silver',
       name: 'silver',
+      alias:'/resources/prepay/zyt/list',
       component: silver
     },
     {
       path: '/channel/channel',
       name: 'channel',
+      alias:'/resources/dealer/list',
       component: channel
     },
     {
       path: '/power/user/adduser',
       name: 'adduser',
       component: adduser,
-      alias: '/adduser'
+      alias: '/resources/role/list'
     },
      {
       path: '/power/user/permissionquery',
       name: 'permissionquery',
+      alias:'/resources/role/func/list',
       component: permissionquery
+    },
+    {
+      path: '/power/user/RoleManagement',
+      name: 'RoleManagement',
+      alias:'/resources/role/list',
+      component: RoleManagement
+    },
+    {
+      path: '/power/user/RoleRightsManagement',
+      name: 'RoleRightsManagement',
+      alias:'/resources/role/normal/list',
+      component: RoleRightsManagement
+    },
+    {
+      path: '/power/user/RoleRightsSearch',
+      name: 'RoleRightsSearch',
+      alias:'/resources/role/func/list',
+      component: RoleRightsSearch
+    },
+    {
+      path: '/power/user/UserRightsManagement',
+      name: 'UserRightsManagement',
+      alias:'/resources/user/list',
+      component: UserRightsManagement
+    },
+    {
+      path: '/power/user/UserRightsSearch',
+      name: 'UserRightsSearch',
+      alias:'/resources/user/func/list',
+      component: UserRightsSearch
+    },
+    {
+      path: '/power/user/resetPassword',
+      name: 'resetPassword',
+      alias:'/resources/user/resetpwd/list',
+      component: resetPassword
+    },
+    {
+      path: '/power/user/newPassword',
+      name: 'newPassword',
+      alias:'/resources/user/updatePassword',
+      component: newPassword
+    },
+    {
+      path: '/power/log/adminlog',
+      name: 'adminlog',
+      alias:'/resources/log/user/list',
+      component: adminlog
+    },
+    {
+      path: '/power/log/systemlog',
+      name: 'systemlog',
+      alias:'/resources/log/sys/list',
+      component: systemlog
+    },
+
+     {
+      path: '/power/user/test',
+      name: 'test',
+      component: test
     }
     ]
   }

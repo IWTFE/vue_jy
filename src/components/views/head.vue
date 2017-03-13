@@ -16,11 +16,9 @@
 <script type="text/javascript">
 import user from 'src/components/views/user.vue'
 import { mapGetters, mapActions } from 'vuex'
-
 export default {
   data() {
     return {
-
     }
   },
   props: {
@@ -56,6 +54,7 @@ export default {
   position:fixed;
   top:0;
   width:100%;
+  z-index:1900
 }
 
 .headImg {

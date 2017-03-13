@@ -9,7 +9,10 @@ export const requestLogin = params => { return axios.post(`${base}/fundSystemMan
 export const requestViewInfo = params => { return axios.post(`${base}/resources/account/viewInfo`,params).then(res => res.data) };
 // su 退出接口
 export const requestLoginOut = params => { return axios.post(`${base}/fundSystemManage-agent/user/logout`,params).then(res => res.data)}
-// 角色管理
+// su 角色管理
 export const requestPowerUserList = params => { return axios.post(`${base_}/fundSystemManage-agent/resources/role/list`,params).then(res => res.data)}
-// 创建/添加 角色
-export const requestPowerCreateUser = params => { return axios.post(`${base}/fundSystemManage-agent/resources/role/create`,params).then(res => res.data)}
+// su 创建/添加 角色
+export const requestPowerCreateUser = (params) => { return axios.post(`${base_}/fundSystemManage-agent/resources/role/create`,params).then(res => res.data)}
+// export const requestPowerCreateUser = (params,config) => { return axios.post(`${base}/fundSystemManage-agent/resources/role/create`,params,config).then(res => res.data)}
+// su 修改角色
+export const requestPowerModifyInfo = (params) => { return axios.post(`${base_}/fundSystemManage-agent/resources/role/update`,params).then(res => res.data)}

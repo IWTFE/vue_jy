@@ -1,7 +1,7 @@
 <template id="content">
 
    <div class="contentDiv animated" :class="{ width100: show, width238: !show }">
-       <pre><code>{{demoTemp}}</code></pre>
+       <pre><code>{{getlist}}</code></pre>
        <!-- Table -->
     <router-view></router-view>
    </div>

@@ -196,7 +196,7 @@ export default {
         } else {
           //console.log(data)
           // 跳转到home页
-          // console.log(data.body)
+          console.log(data.body)
           this.$router.push({ path: '/' });
           sessionStorage.setItem('user', JSON.stringify(data.body));
           //this.$router.push({ path: '/' });
